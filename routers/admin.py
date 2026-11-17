@@ -9,7 +9,11 @@ from schemas import (
     SkillMasterOut,
     SkillPaginationOut,
     BulkSkillStatusUpdate,
-    MergeSkillRequest
+    MergeSkillRequest,
+    SkillStatusResponse,
+    BulkSkillStatusResponse,
+    MergeSkillResponse,
+    MessageBase
 )
 from dependencies import require_role
 
@@ -73,7 +77,7 @@ def create_skill(
     return skill
 
 
-@router.patch("/skills/{skill_id}/status")
+@router.patch("/skills/{skill_id}/status", response_model=SkillStatusResponse)
 def update_skill_status(
     skill_id: int,
     status: str,
@@ -142,7 +146,7 @@ def get_skills(
     }
 
 
-@router.patch("/skills/bulk-status")
+@router.patch("/skills/bulk-status", response_model=BulkSkillStatusResponse)
 def bulk_update_skill_status(
     data: BulkSkillStatusUpdate,
     user=Depends(require_role("admin")),
@@ -172,7 +176,7 @@ def bulk_update_skill_status(
     }
 
 
-@router.post("/skills/merge")
+@router.post("/skills/merge", response_model=MergeSkillResponse)
 def merge_skills(
     data: MergeSkillRequest,
     user=Depends(require_role("admin")),
@@ -238,7 +242,7 @@ def merge_skills(
     }
 
 
-@router.delete("/skills/{skill_id}")
+@router.delete("/skills/{skill_id}", response_model=MessageBase)
 def delete_skill(
     skill_id: int,
     user=Depends(require_role("admin")),

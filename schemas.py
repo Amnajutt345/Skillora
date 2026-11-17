@@ -1,54 +1,101 @@
+
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
-from typing import Literal, Optional
+from typing import Literal
 
 
-class RegisterRequest(BaseModel):
-    name: str = Field(min_length=2, max_length=100)
+# ==========================================
+# REUSABLE BASE MODELS
+# ==========================================
+
+class ORMBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+
+class MessageBase(BaseModel):
+    message: str
+
+
+class CredentialsBase(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
-    role: Literal["developer", "recruiter", "admin"]
 
 
-class RegisterResponse(BaseModel):
-    message: str
-    user_id: int
-    role: str
-
-
-class LoginRequest(BaseModel):
-    email: EmailStr
-    password: str = Field(min_length=8)
-
-
-class LoginResponse(BaseModel):
-    message: str
+class UserIdentityBase(BaseModel):
     user_id: int
     name: str
     role: str
+
+
+class ProfileFieldsBase(BaseModel):
+    name: str
+    description: str | None = None
+    qualification: str | None = None
+    location: str | None = None
+
+
+class SkillNameBase(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+
+
+# ==========================================
+# AUTHENTICATION REQUEST MODELS
+# ==========================================
+
+class RegisterRequest(CredentialsBase):
+    name: str = Field(min_length=2, max_length=100)
+    role: Literal["developer", "recruiter", "admin"]
+
+
+class LoginRequest(CredentialsBase):
+    pass
+
+
+# ==========================================
+# AUTHENTICATION RESPONSE MODELS
+# ==========================================
+
+class RegisterResponse(MessageBase):
+    user_id: int
+    role: str
+
+
+class LoginResponse(MessageBase, UserIdentityBase):
     access_token: str
     token_type: str
 
 
-class UserResponse(BaseModel):
-    user_id: int
-    name: str
+class UserResponse(UserIdentityBase):
     email: EmailStr
-    role: str
 
 
-class ProfileIn(BaseModel):
+class LogoutResponse(MessageBase):
+    pass
+
+
+# ==========================================
+# PROFILE MODELS
+# ==========================================
+
+class ProfileIn(ProfileFieldsBase):
+    pass
+
+
+class ProfileUpdate(ProfileFieldsBase):
+    name: str | None = None
+
+
+class ProfileOut(ORMBase):
+    id: int
     name: str
-    description: Optional[str] = None
-    qualification: Optional[str] = None
-    location: Optional[str] = None
+    description: str | None = None
+    qualification: str | None = None
+    location: str | None = None
+    github_username: str | None = None
 
 
-class ProfileUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    qualification: Optional[str] = None
-    location: Optional[str] = None
-
+# ==========================================
+# SKILL MODELS
+# ==========================================
 
 class SkillOut(BaseModel):
     name: str
@@ -56,28 +103,19 @@ class SkillOut(BaseModel):
     verified: bool
 
 
-class ProfileOut(BaseModel):
-    id: int
-    name: str
-    description: Optional[str] = None
-    qualification: Optional[str] = None
-    location: Optional[str] = None
-    github_username: Optional[str] = None
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class SkillCreate(BaseModel):
+class SkillCreate(SkillNameBase):
     name: str = Field(min_length=2, max_length=100)
 
 
-class SkillMasterOut(BaseModel):
+class SkillAdd(SkillNameBase):
+    name: str = Field(min_length=1, max_length=50)
+
+
+class SkillMasterOut(ORMBase):
     id: int
     name: str
     status: str
     merged_into_id: int | None = None
-
-    model_config = ConfigDict(from_attributes=True)
 
 
 class SkillPaginationOut(BaseModel):
@@ -90,13 +128,45 @@ class SkillPaginationOut(BaseModel):
 
 class BulkSkillStatusUpdate(BaseModel):
     skill_ids: list[int] = Field(min_length=1)
-    status: str
+    status: Literal["approved", "rejected"]
 
 
 class MergeSkillRequest(BaseModel):
-    source_skill_id: int
-    target_skill_id: int
+    source_skill_id: int = Field(gt=0)
+    target_skill_id: int = Field(gt=0)
 
 
-class SkillAdd(BaseModel):
-    name: str = Field(min_length=1, max_length=50)
+# ==========================================
+# SKILL RESPONSE MODELS
+# ==========================================
+
+class SkillAddResponse(MessageBase):
+    skill: str
+    source: str
+    verified: bool
+
+
+class SkillStatusResponse(MessageBase):
+    skill: str
+    status: Literal["approved", "rejected"]
+
+
+class BulkSkillStatusResponse(MessageBase):
+    updated_count: int
+    status: Literal["approved", "rejected"]
+
+
+class MergeSkillResponse(MessageBase):
+    source_skill: str
+    target_skill: str
+    merged_into_id: int
+
+
+# ==========================================
+# CV RESPONSE MODEL
+# ==========================================
+
+class CVUploadResponse(MessageBase):
+    extracted_skills: list[str]
+    added_skills: list[str]
+    cv_path: str

@@ -5,7 +5,16 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Profile, ProfileSkill, Skill
-from schemas import ProfileIn, ProfileUpdate, ProfileOut, SkillOut, SkillAdd
+from schemas import (
+    ProfileIn,
+    ProfileUpdate,
+    ProfileOut,
+    SkillOut,
+    SkillAdd,
+    SkillAddResponse,
+    CVUploadResponse,
+    MessageBase
+)
 from dependencies import require_role
 from services.cv_parser import extract_text_from_pdf
 from services.matcher import extract_skills
@@ -158,7 +167,7 @@ def get_skills(
     ]
 
 
-@router.post("/skills", status_code=201)
+@router.post("/skills", status_code=201, response_model=SkillAddResponse)
 def add_skill(
     data: SkillAdd,
     user=Depends(require_role("developer")),
@@ -198,7 +207,7 @@ def add_skill(
     }
 
 
-@router.delete("/skills/{skill_name}")
+@router.delete("/skills/{skill_name}", response_model=MessageBase)
 def remove_skill(
     skill_name: str,
     user=Depends(require_role("developer")),
@@ -230,7 +239,7 @@ def remove_skill(
     return {"message": "Skill removed successfully"}
 
 
-@router.post("/cv", status_code=200)
+@router.post("/cv", status_code=200, response_model=CVUploadResponse)
 def upload_cv(
     file: UploadFile = File(...),
     user=Depends(require_role("developer")),
