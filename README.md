@@ -649,179 +649,7 @@ A skill assigned to a developer cannot be deleted.
 
 ---
 
-# 10. Frontend Integration Guide
-
-This section explains how a frontend developer can connect a frontend application to the Skillora backend.
-
-## 10.1 Configure API Base URL
-
-For a Vite frontend, create a `.env` file:
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-```
-
-Access it in JavaScript:
-
-```javascript
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-```
-
-For a deployed application, replace the URL with the deployed backend address.
-
-Do not put database credentials or the JWT signing secret in frontend environment variables.
-
-## 10.2 Create a Reusable API Service
-
-Instead of writing fetch logic repeatedly, create a reusable API helper.
-
-Example:
-
-```javascript
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-export async function apiRequest(path, options = {}, token = null) {
-  const headers = {
-    ...(options.headers || {})
-  };
-
-  const isFormData = options.body instanceof FormData;
-
-  if (!isFormData && options.body !== undefined) {
-    headers["Content-Type"] = "application/json";
-  }
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers
-  });
-
-  const contentType = response.headers.get("content-type") || "";
-
-  const data = contentType.includes("application/json")
-    ? await response.json()
-    : await response.text();
-
-  if (!response.ok) {
-    const message =
-      typeof data === "object" && data !== null
-        ? data.detail || data.message || "Request failed"
-        : data || "Request failed";
-
-    throw new Error(message);
-  }
-
-  return data;
-}
-```
-
-## 10.3 Frontend Registration
-
-```javascript
-const result = await apiRequest("/auth/register", {
-  method: "POST",
-  body: JSON.stringify({
-    name: "Sample Developer",
-    email: "developer@example.com",
-    password: "StrongPassword123",
-    role: "developer"
-  })
-});
-
-console.log(result);
-```
-
-## 10.4 Frontend Login
-
-```javascript
-const result = await apiRequest("/auth/login", {
-  method: "POST",
-  body: JSON.stringify({
-    email: "developer@example.com",
-    password: "StrongPassword123"
-  })
-});
-
-const token = result.access_token;
-const role = result.role;
-```
-
-Store the token according to the frontend application's security requirements. Prefer in-memory storage where practical. JavaScript-accessible persistent storage carries XSS risks.
-
-## 10.5 Access Protected Routes
-
-```javascript
-const profile = await apiRequest(
-  "/profile",
-  {
-    method: "GET"
-  },
-  token
-);
-```
-
-Every protected request must include:
-
-```http
-Authorization: Bearer <JWT_ACCESS_TOKEN>
-```
-
-## 10.6 Upload CV
-
-```javascript
-const formData = new FormData();
-
-formData.append("file", selectedPdfFile);
-
-const result = await apiRequest(
-  "/profile/cv",
-  {
-    method: "POST",
-    body: formData
-  },
-  token
-);
-```
-
-Do not manually set the `Content-Type` header for FormData. The browser automatically sets the multipart boundary.
-
-## 10.7 Frontend Logout
-
-```javascript
-await apiRequest(
-  "/auth/logout",
-  {
-    method: "POST"
-  },
-  token
-);
-
-// Clear token and authentication state after successful logout.
-```
-
-## 10.8 Role-Based Frontend Navigation
-
-The frontend can use the returned role to display the correct dashboard:
-
-```javascript
-if (role === "developer") {
-  // Open Developer Dashboard
-} else if (role === "recruiter") {
-  // Open Recruiter Dashboard
-} else if (role === "admin") {
-  // Open Admin Dashboard
-}
-```
-
-This is only for frontend navigation. The backend must continue enforcing permissions.
-
----
-
-# 11. CORS Configuration
+# 10. CORS Configuration
 
 The backend currently allows these development origins:
 
@@ -838,7 +666,7 @@ For deployment, configure only trusted frontend origins.
 
 ---
 
-# 12. HTTP Status Codes and Error Handling
+# 11. HTTP Status Codes and Error Handling
 
 | Status | Meaning |
 |---|---|
@@ -864,7 +692,7 @@ The frontend should display safe error messages and never expose internal server
 
 ---
 
-# 13. CV Parsing and Skill Matching
+# 12. CV Parsing and Skill Matching
 
 The CV workflow follows these steps:
 
@@ -881,7 +709,7 @@ The current OCR configuration contains a Windows-specific Tesseract path. Update
 
 ---
 
-# 14. Database Models
+# 13. Database Models
 
 ## Users
 
@@ -941,7 +769,7 @@ Stores revoked JWT tokens to prevent their reuse after logout.
 
 ---
 
-# 15. Testing with Postman
+# 14. Testing with Postman
 
 Recommended testing sequence:
 
@@ -968,7 +796,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 16. Data Migration Utility
+# 15. Data Migration Utility
 
 The project includes:
 
@@ -997,7 +825,7 @@ For normal development, start the FastAPI server instead.
 
 ---
 
-# 17. Security and Production Considerations
+# 16. Security and Production Considerations
 
 Before public deployment:
 
@@ -1017,7 +845,7 @@ Before public deployment:
 
 ---
 
-# 18. Current Development Scope
+# 17. Current Development Scope
 
 The currently registered backend functionality includes:
 
@@ -1040,7 +868,7 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 19. Git Workflow
+# 18. Git Workflow
 
 The team uses feature branches and pull requests.
 
@@ -1079,7 +907,7 @@ Never commit:
 
 ---
 
-# 20. Future Development
+# 19. Future Development
 
 Potential future improvements include:
 
@@ -1098,11 +926,11 @@ Potential future improvements include:
 
 # Maintainer Notes
 
-- Keep backend schemas consistent with frontend request and response structures.
+- Keep backend schemas consistent with API request and response structures.
 - Update this README whenever endpoints or database structures change.
 - Use Swagger UI to verify endpoint contracts.
 - Keep credentials and sensitive user information private.
 - Test changes before pushing commits.
-- Document newly implemented endpoints for frontend integration.
+- Document newly implemented endpoints.
 
 **Skillora Backend — FastAPI, PostgreSQL, and REST API.**
