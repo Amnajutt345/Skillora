@@ -1,11 +1,27 @@
-from sqlalchemy import create_engine
+
+import os
+
+from dotenv import load_dotenv
+from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URL = "sqlite:///./skillora.db"
+load_dotenv()
+
+DATABASE_URL = URL.create(
+    drivername="postgresql+psycopg2",
+    username=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST", "localhost"),
+    port=int(os.getenv("DB_PORT", "5432")),
+    database=os.getenv("DB_NAME", "skillora_db"),
+)
+
+if not os.getenv("DB_PASSWORD"):
+    raise ValueError("DB_PASSWORD is missing from .env")
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(
