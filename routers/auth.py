@@ -11,7 +11,8 @@ from schemas import (
     RegisterResponse,
     LoginRequest,
     LoginResponse,
-    UserResponse
+    UserResponse,
+    LogoutResponse
 )
 from security import hash_password, verify_password, create_access_token
 from dependencies import get_current_user, bearer_scheme, require_role
@@ -117,7 +118,7 @@ def get_my_profile(
     }
 
 
-@router.post("/logout")
+@router.post("/logout", response_model=LogoutResponse)
 def logout(
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     current_user: User = Depends(get_current_user),
