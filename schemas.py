@@ -113,6 +113,35 @@ class RecruiterProfileOut(ORMBase):
     company_logo: str | None = None
 
 
+# COMPANY MODELS
+
+class CompanyFieldsBase(BaseModel):
+    name: str = Field(min_length=2, max_length=150)
+    website: str | None = Field(default=None, max_length=255)
+    description: str | None = None
+    location: str | None = Field(default=None, max_length=150)
+
+
+class CompanyIn(CompanyFieldsBase):
+    pass
+
+
+class CompanyUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=2, max_length=150)
+    website: str | None = Field(default=None, max_length=255)
+    description: str | None = None
+    location: str | None = Field(default=None, max_length=150)
+
+
+class CompanyOut(ORMBase):
+    id: int
+    name: str
+    website: str | None = None
+    description: str | None = None
+    location: str | None = None
+    logo: str | None = None
+
+
 # SKILL MODELS
 
 class SkillOut(BaseModel):
