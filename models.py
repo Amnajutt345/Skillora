@@ -48,6 +48,48 @@ class Profile(Base):
     )
 
 
+class RecruiterProfile(Base):
+    __tablename__ = "recruiter_profiles"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"),
+        unique=True,
+        nullable=False
+    )
+
+    company_name: Mapped[str] = mapped_column(
+        String(150),
+        nullable=False
+    )
+
+    company_website: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True
+    )
+
+    company_description: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True
+    )
+
+    company_location: Mapped[str | None] = mapped_column(
+        String(150),
+        nullable=True
+    )
+
+    company_logo: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+
 class Skill(Base):
     __tablename__ = "skills"
 
