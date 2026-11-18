@@ -1,11 +1,8 @@
-
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Literal
 
 
-# ==========================================
 # REUSABLE BASE MODELS
-# ==========================================
 
 class ORMBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -37,9 +34,7 @@ class SkillNameBase(BaseModel):
     name: str = Field(min_length=1, max_length=100)
 
 
-# ==========================================
 # AUTHENTICATION REQUEST MODELS
-# ==========================================
 
 class RegisterRequest(CredentialsBase):
     name: str = Field(min_length=2, max_length=100)
@@ -50,9 +45,7 @@ class LoginRequest(CredentialsBase):
     pass
 
 
-# ==========================================
 # AUTHENTICATION RESPONSE MODELS
-# ==========================================
 
 class RegisterResponse(MessageBase):
     user_id: int
@@ -72,9 +65,7 @@ class LogoutResponse(MessageBase):
     pass
 
 
-# ==========================================
 # PROFILE MODELS
-# ==========================================
 
 class ProfileIn(ProfileFieldsBase):
     pass
@@ -93,9 +84,7 @@ class ProfileOut(ORMBase):
     github_username: str | None = None
 
 
-# ==========================================
 # SKILL MODELS
-# ==========================================
 
 class SkillOut(BaseModel):
     name: str
@@ -136,9 +125,7 @@ class MergeSkillRequest(BaseModel):
     target_skill_id: int = Field(gt=0)
 
 
-# ==========================================
 # SKILL RESPONSE MODELS
-# ==========================================
 
 class SkillAddResponse(MessageBase):
     skill: str
@@ -162,11 +149,25 @@ class MergeSkillResponse(MessageBase):
     merged_into_id: int
 
 
-# ==========================================
 # CV RESPONSE MODEL
-# ==========================================
 
 class CVUploadResponse(MessageBase):
     extracted_skills: list[str]
     added_skills: list[str]
     cv_path: str
+
+
+# PASSWORD RESET REQUEST MODELS
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=32)
+    new_password: str = Field(min_length=8)
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str = Field(min_length=8)
