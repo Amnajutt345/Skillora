@@ -1,9 +1,10 @@
-
 import os
 from pwdlib import PasswordHash
 from datetime import datetime, timedelta, timezone
 import jwt
 from dotenv import load_dotenv
+import secrets
+import hashlib
 
 load_dotenv()
 
@@ -42,3 +43,11 @@ def create_access_token(data: dict):
     )
 
     return token
+
+
+def generate_reset_token():
+    return secrets.token_urlsafe(32)
+
+
+def hash_reset_token(token: str):
+    return hashlib.sha256(token.encode()).hexdigest()
