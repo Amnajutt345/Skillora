@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, UniqueConstraint
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -13,6 +13,12 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     hashed_password: Mapped[str] = mapped_column(String(255))
     role: Mapped[str] = mapped_column(String(20))
+
+    token_version: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
+        nullable=False
+    )
 
 
 class RevokedToken(Base):

@@ -62,6 +62,12 @@ def get_current_user(
             detail="User not found"
         )
 
+    if payload.get("token_version") != user.token_version:
+        raise HTTPException(
+            status_code=401,
+            detail="Token is outdated. Please log in again."
+        )
+
     return user
 
 
