@@ -84,6 +84,35 @@ class ProfileOut(ORMBase):
     github_username: str | None = None
 
 
+# RECRUITER PROFILE MODELS
+
+class RecruiterProfileFieldsBase(BaseModel):
+    company_name: str = Field(min_length=2, max_length=150)
+    company_website: str | None = Field(default=None, max_length=255)
+    company_description: str | None = None
+    company_location: str | None = Field(default=None, max_length=150)
+
+
+class RecruiterProfileIn(RecruiterProfileFieldsBase):
+    pass
+
+
+class RecruiterProfileUpdate(BaseModel):
+    company_name: str | None = Field(default=None, min_length=2, max_length=150)
+    company_website: str | None = Field(default=None, max_length=255)
+    company_description: str | None = None
+    company_location: str | None = Field(default=None, max_length=150)
+
+
+class RecruiterProfileOut(ORMBase):
+    id: int
+    company_name: str
+    company_website: str | None = None
+    company_description: str | None = None
+    company_location: str | None = None
+    company_logo: str | None = None
+
+
 # SKILL MODELS
 
 class SkillOut(BaseModel):

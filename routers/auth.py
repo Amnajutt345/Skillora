@@ -151,6 +151,7 @@ def reset_password(
 
     user.hashed_password = hash_password(data.new_password)
     reset_record.used = True
+    user.token_version += 1
 
     db.commit()
 
@@ -175,6 +176,7 @@ def change_password(
         )
 
     current_user.hashed_password = hash_password(data.new_password)
+    current_user.token_version += 1
     db.commit()
 
     return {
@@ -205,7 +207,8 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
 
     access_token = create_access_token({
         "sub": str(user.id),
-        "role": user.role
+        "role": user.role,
+        "token_version": user.token_version
     })
 
     return {
