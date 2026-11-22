@@ -66,12 +66,6 @@ Phase 1 establishes the public entry points and shared authentication foundation
 - **Phase 6 — Recruiter Module:** Company and job workflows, developer discovery, and candidate management.
 - **Phase 7 — Admin Module:** Platform management and statistics.
 
-## Team Contributions
-
-The project work is divided by modules:
-
-- **Meerab:** Shared foundation, public/authentication flow, developer module, GitHub integration, CV and skill extraction, and related analysis workflows.
-- **Ruhma:** Recruiter module and admin module.
 
 ## Notes
 
