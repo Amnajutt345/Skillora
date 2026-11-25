@@ -70,3 +70,45 @@ Phase 1 establishes the public entry points and shared authentication foundation
 ## Notes
 
 This repository is being updated phase by phase as development progresses. Features listed under upcoming phases are planned and should not be considered complete yet.
+
+
+## Phase 2 — Developer Profile
+
+### Overview
+
+Phase 2 focused on implementing the Developer Profile module of Skillora. This phase covered the developer dashboard, profile-related screens, and supporting functionality for managing and viewing developer profile information.
+
+The implementation was added to the `meerab` branch.
+
+### Implemented Features
+
+#### Developer Dashboard
+- Developer Dashboard
+- Dashboard UI and supporting functionality
+
+#### Developer Profile
+- Profile management screen
+- View Profile screen
+- Profile-related functionality
+
+#### Supporting Components & Utilities
+- Skill selection component
+- Profile-related utilities
+- Skill matching utility
+- Verification utility
+
+### Branch & Version Control
+
+Phase 2 changes were committed and pushed to the `meerab` branch.
+
+The implementation was organized into separate commits to maintain a structured development workflow.
+
+### Phase 2 Status
+
+**Completed** — Developer Dashboard and Profile-related screens and supporting utilities have been implemented, committed, and pushed to the `meerab` branch.
+
+### Next Phase
+
+**Phase 3 — CV & Skill Extraction**
+
+The next phase will focus on CV upload, skill extraction, analysis, skill sheet, and recommendations.
