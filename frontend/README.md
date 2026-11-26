@@ -31,6 +31,7 @@ frontend/
     ├── api/
     ├── components/
     ├── context/
+    ├── lib/
     ├── pages/
     │   ├── admin/
     │   ├── developer/
@@ -57,58 +58,73 @@ Phase 1 establishes the public entry points and shared authentication foundation
 - Protected routes and role-based access control
 - Shared application layout and navigation
 
-### Upcoming Phases
+### Phase 2 — Developer Profile
 
-- **Phase 2 — Developer Profile:** Developer dashboard and profile-related screens.
-- **Phase 3 — CV & Skill Extraction:** CV upload, skill extraction, analysis, skill sheet, and recommendations.
-- **Phase 4 — GitHub Integration:** Repository connection, selection, analysis, and evidence workflows.
-- **Phase 5 — Developer Workflow:** Jobs, job details, applications, notifications, and supporting screens.
-- **Phase 6 — Recruiter Module:** Company and job workflows, developer discovery, and candidate management.
-- **Phase 7 — Admin Module:** Platform management and statistics.
-
-
-## Notes
-
-This repository is being updated phase by phase as development progresses. Features listed under upcoming phases are planned and should not be considered complete yet.
-
-
-## Phase 2 — Developer Profile
-
-### Overview
+**Status: Completed**
 
 Phase 2 focused on implementing the Developer Profile module of Skillora. This phase covered the developer dashboard, profile-related screens, and supporting functionality for managing and viewing developer profile information.
 
-The implementation was added to the `meerab` branch.
+#### Implemented Features
 
-### Implemented Features
-
-#### Developer Dashboard
+**Developer Dashboard**
 - Developer Dashboard
 - Dashboard UI and supporting functionality
 
-#### Developer Profile
+**Developer Profile**
 - Profile management screen
 - View Profile screen
 - Profile-related functionality
 
-#### Supporting Components & Utilities
+**Supporting Components & Utilities**
 - Skill selection component
 - Profile-related utilities
 - Skill matching utility
 - Verification utility
 
-### Branch & Version Control
+The implementation was committed and pushed to the `meerab` branch.
 
-Phase 2 changes were committed and pushed to the `meerab` branch.
+### Phase 3 — CV & Skill Extraction
 
-The implementation was organized into separate commits to maintain a structured development workflow.
+**Status: Completed**
 
-### Phase 2 Status
+Phase 3 focused on CV upload, text extraction, skill identification, and skill-related analysis and recommendations within the Developer Module.
 
-**Completed** — Developer Dashboard and Profile-related screens and supporting utilities have been implemented, committed, and pushed to the `meerab` branch.
+#### Implemented Features
 
-### Next Phase
+**CV Upload & Processing**
+- CV upload interface
+- PDF and TXT file support
+- CV text extraction and processing
+- File validation and size restrictions
 
-**Phase 3 — CV & Skill Extraction**
+**Skill Extraction**
+- Automatic skill extraction from CV text
+- Skill matching against the available skill catalogue
+- Extracted skills review
 
-The next phase will focus on CV upload, skill extraction, analysis, skill sheet, and recommendations.
+**Skill Management**
+- Add skills manually from the available skill catalogue
+- Remove selected skills
+- Review extracted skills before confirmation
+
+**Analysis & Recommendations**
+- Developer skill analysis
+- Skill recommendations
+- Supporting skill analysis utilities
+
+**CV Confirmation**
+- Confirm extracted and selected skills
+- Save CV information and confirmed skills to the developer profile
+
+Phase 3 implementation was committed and pushed to the `meerab` branch.
+
+### Upcoming Phases
+
+- **Phase 4 — GitHub Integration:** Repository connection, selection, analysis, and evidence workflows.
+- **Phase 5 — Developer Workflow:** Jobs, job details, applications, notifications, and supporting screens.
+- **Phase 6 — Recruiter Module:** Company and job workflows, developer discovery, and candidate management.
+- **Phase 7 — Admin Module:** Platform management and statistics.
+
+## Notes
+
+This repository is being updated phase by phase as development progresses. Features listed under upcoming phases are planned and should not be considered complete yet.
