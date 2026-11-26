@@ -22,8 +22,10 @@ export default function Analysis() {
   const [open, setOpen] = useState(null);
 
   useEffect(() => {
-    api.listSkills().then(setCatalogue);
-  }, []);
+  api.listSkills()
+    .then(setCatalogue)
+    .catch((e) => setError(e.message));
+}, []);
 
   const repos = profile.github?.repos || [];
   const batch = repos.filter((r) => r.selected).slice(0, MAX_REPOS_PER_ANALYSIS);
@@ -35,23 +37,25 @@ export default function Analysis() {
     ? Object.entries(analysis.evidence).flatMap(([skill, list]) => list.filter((e) => e.type === 'library').map((e) => ({ skill, ...e })))
     : [];
 
-  const run = async () => {
-    setError('');
-    setProgress({ done: 0, total: batch.length });
-    try {
-      const result = await analyzeRepos(batch, {
-        token: sessionStorage.getItem('skillora_gh_token') || undefined,
-        catalogue: catalogue.map((s) => s.name),
-        onProgress: (done, total) => setProgress({ done, total }),
-      });
-      await api.saveAnalysis(profile.id, result);
-      refresh();
-      toast.success('Analysis finished. Your Skill Sheet is updated.');
-    } catch (e) {
-      setError(e.message);
-    }
+const run = async () => {
+  setError('');
+  setProgress({ done: 0, total: batch.length });
+
+  try {
+    const result = await analyzeRepos(batch, {
+      token: sessionStorage.getItem('skillora_gh_token') || undefined,
+      catalogue: catalogue.map((s) => s.name),
+      onProgress: (done, total) => setProgress({ done, total }),
+    });
+    await api.saveAnalysis(profile.id, result);
+    refresh();
+    toast.success('Analysis finished. Your Skill Sheet is updated.');
+  } catch (e) {
+    setError(e.message);
+  } finally {
     setProgress(null);
-  };
+  }
+};
 
   const addToProfile = async (skill) => {
     await api.updateDeveloper(profile.id, { skills: [...profile.skills, skill], sources: { [skill]: 'GitHub' } });

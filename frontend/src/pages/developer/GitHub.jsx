@@ -23,19 +23,21 @@ export default function GitHub() {
     sessionStorage.setItem('skillora_gh_token', v);
   };
 
-  const pull = async () => {
-    setError('');
-    setBusy(true);
-    try {
-      const data = await pullRepos(username, token || undefined);
-      await api.saveRepos(profile.id, data);
-      refresh();
-      toast.success(`Pulled ${data.repos.length} repositories from GitHub.`);
-    } catch (e) {
-      setError(e.message);
-    }
+ const pull = async () => {
+  setError('');
+  setBusy(true);
+
+  try {
+    const data = await pullRepos(username, token || undefined);
+    await api.saveRepos(profile.id, data);
+    refresh();
+    toast.success(`Pulled ${data.repos.length} repositories from GitHub.`);
+  } catch (e) {
+    setError(e.message);
+  } finally {
     setBusy(false);
-  };
+  }
+};
 
   const toggle = async (repo, checked) => {
     await api.setRepoSelection(profile.id, repo.id, checked);
