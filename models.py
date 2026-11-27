@@ -163,7 +163,7 @@ class Job(Base):
     )
 
     company_id: Mapped[int] = mapped_column(
-        ForeignKey("companies.id"),
+        ForeignKey("recruiter_profiles.id"),
         nullable=False
     )
 

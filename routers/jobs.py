@@ -1,9 +1,8 @@
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Job, Company
+from models import Job, RecruiterProfile
 from schemas import JobCreate, JobOut
 from dependencies import require_role
 
@@ -14,6 +13,18 @@ router = APIRouter(
 )
 
 
+# GET ALL RECRUITER JOBS
+@router.get("", response_model=list[JobOut])
+def get_recruiter_jobs(
+    user=Depends(require_role("recruiter")),
+    db: Session = Depends(get_db)
+):
+    jobs = db.query(Job).filter(
+        Job.recruiter_id == user.id
+    ).all()
+    return jobs
+
+
 # CREATE JOB
 @router.post("", response_model=JobOut, status_code=201)
 def create_job(
@@ -21,8 +32,8 @@ def create_job(
     user=Depends(require_role("recruiter")),
     db: Session = Depends(get_db)
 ):
-    company = db.query(Company).filter_by(
-        recruiter_id=user.id
+    company = db.query(RecruiterProfile).filter_by(
+        user_id=user.id
     ).first()
 
     if not company:
