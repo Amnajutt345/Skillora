@@ -27,8 +27,11 @@ export default function Applications() {
                     <td><b>{a.job?.title || 'Job removed'}</b></td>
                     <td>{a.job?.companyName}</td>
                     <td>{fmtDate(a.appliedAt)}</td>
-                    <td><Chip tone={STATUS[a.status][0]}>{STATUS[a.status][1]}</Chip></td>
-                    <td>
+<td>
+  <Chip tone={STATUS[a.status]?.[0] || ''}>
+    {STATUS[a.status]?.[1] || a.status || 'Unknown'}
+  </Chip>
+</td>                    <td>
                       {a.job && (
                         <div className="row">
                           <Link className="btn ghost" to={`/developer/jobs/${a.jobId}`}>View Job</Link>
