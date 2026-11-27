@@ -38,7 +38,7 @@ class SkillNameBase(BaseModel):
 
 class RegisterRequest(CredentialsBase):
     name: str = Field(min_length=2, max_length=100)
-    role: Literal["developer", "recruiter", "admin"]
+    role: Literal["developer", "recruiter"]
 
 
 class LoginRequest(CredentialsBase):
