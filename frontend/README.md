@@ -163,9 +163,29 @@ Phase 4 implementation was committed to the `meerab` branch.
 
 ---
 
+### Phase 5 — Developer Workflow
+
+- Job listings and job browsing
+- Job search by title and company
+- Location and skill-based filtering
+- Skill compatibility scoring for jobs
+- Required and preferred skill display
+- Verified and unverified skill indicators
+- Detailed job view
+- Job application submission
+- Duplicate application prevention
+- Already-applied job tracking
+- Applications dashboard
+- Application status tracking (Applied, Shortlisted, Selected, Rejected)
+- Developer notifications system
+- Read/unread notification management
+- Dashboard integration for recommended jobs and recent applications
+- Safe fallback handling for unknown application statuses
+
+**Status:** Complete
+
 ## Upcoming Phases
 
-- **Phase 5 — Developer Workflow:** Jobs, job details, applications, notifications, and supporting screens.
 - **Phase 6 — Recruiter Module:** Company and job workflows, developer discovery, and candidate management.
 - **Phase 7 — Admin Module:** Platform management and statistics.
 
