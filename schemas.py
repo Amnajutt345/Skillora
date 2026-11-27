@@ -200,3 +200,25 @@ class ResetPasswordRequest(BaseModel):
 class ChangePasswordRequest(BaseModel):
     current_password: str
     new_password: str = Field(min_length=8)
+
+
+# JOB MODELS
+
+class JobCreate(BaseModel):
+    title: str = Field(min_length=2, max_length=150)
+    description: str = Field(min_length=10)
+    location: str | None = Field(default=None, max_length=150)
+    job_type: Literal["full-time", "part-time", "internship", "contract"]
+    salary: str | None = Field(default=None, max_length=100)
+
+
+class JobOut(ORMBase):
+    id: int
+    recruiter_id: int
+    company_id: int
+    title: str
+    description: str
+    location: str | None = None
+    job_type: str
+    salary: str | None = None
+    status: str

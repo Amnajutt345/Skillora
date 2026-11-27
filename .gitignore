@@ -12,3 +12,4 @@ uploads/
 sample_cv.pdf
 scanned_cv.pdf
 .vscode/
+*.dump
