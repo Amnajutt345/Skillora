@@ -150,3 +150,37 @@ class PasswordResetToken(Base):
         default=datetime.utcnow,
         nullable=False
     )
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+
+    recruiter_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"),
+        nullable=False
+    )
+
+    company_id: Mapped[int] = mapped_column(
+        ForeignKey("companies.id"),
+        nullable=False
+    )
+
+    title: Mapped[str] = mapped_column(String(150), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    location: Mapped[str | None] = mapped_column(String(150), nullable=True)
+    job_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    salary: Mapped[str | None] = mapped_column(String(100), nullable=True)
+
+    status: Mapped[str] = mapped_column(
+        String(20),
+        default="open",
+        nullable=False
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+        nullable=False
+    )

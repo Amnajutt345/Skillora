@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import Base, engine
-from routers import auth, profile, admin, recruiter
+import models
+from routers import auth, profile, admin, recruiter, jobs
 
 app = FastAPI(title="Skillora API")
 
@@ -26,6 +27,7 @@ app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(admin.router)
 app.include_router(recruiter.router)
+app.include_router(jobs.router)
 
 
 @app.get("/")
